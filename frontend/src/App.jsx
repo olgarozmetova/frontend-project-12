@@ -1,5 +1,5 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import Home from './pages/HomePage'
+import Chat from './pages/ChatPage'
 import Login from './pages/LoginPage'
 import NotFound from './pages/NotFoundPage'
 import ProtectedRoute from './components/ProtectedRoute'
@@ -14,7 +14,7 @@ const App = () => {
           path="/"
           element={
             <ProtectedRoute>
-              <Home />
+              <Chat />
             </ProtectedRoute>
           }
         />

@@ -2,20 +2,18 @@
 
 [![Actions Status](https://github.com/olgarozmetova/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/olgarozmetova/frontend-project-12/actions)
 
-## Production:
+### Production:
 
-´´
-
-## 🔨 Build the project
-
+```bash
+# 🔨 Build the project
 make build
 
-## ▶️ Start the server
-
+# ▶️ Start the server
 make start
 
-´´
 Open the application at: http://localhost:5001
+
+```
 
 ## Link to app:
 

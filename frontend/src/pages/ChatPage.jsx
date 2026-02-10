@@ -1,6 +1,11 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import socket from '../socket/socket'
+import api from '../api/api'
+
 import { initApp } from '../store/initSlice'
+import { addMessage } from '../store/messagesSlice'
+import { setCurrentChannel } from '../store/channelsSlice'
 
 import {
   Container,
@@ -15,13 +20,75 @@ import {
 const Chat = () => {
   const dispatch = useDispatch()
 
+  const { list: channels, currentChannelId } = useSelector(
+    state => state.channels,
+  )
+  const messages = useSelector(state => state.messages.list)
+
+  const [text, setText] = useState('')
+  const [sending, setSending] = useState(false)
+  const messagesEndRef = useRef(null)
+
+  // INIT: Receive data (channels + messages)
   useEffect(() => {
     dispatch(initApp())
   }, [dispatch])
 
+  // Connect WebSocket
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect()
+    }
+
+    socket.on('newMessage', message => {
+      dispatch(addMessage(message))
+    })
+
+    return () => {
+      socket.off('newMessage')
+    }
+  }, [dispatch])
+
+  // Autoscroll
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, currentChannelId])
+
+  // Send message
+  const handleSubmit = async e => {
+    e.preventDefault()
+    if (!currentChannelId || !text.trim()) {
+      return
+    }
+
+    setSending(true)
+
+    try {
+      await api.post('/messages', {
+        body: text,
+        channelId: currentChannelId,
+      })
+      setText('')
+    } catch {
+      alert('Ошибка отправки сообщения')
+    } finally {
+      setSending(false)
+    }
+  }
+
+  const currentMessages = currentChannelId
+    ? messages.filter(m => m.channelId === currentChannelId)
+    : []
+
+  const currentChannel = channels.find(c => c.id === currentChannelId)
+
   return (
-    <Container fluid className="min-vh-100 my-4 overflow-hidden rounded shadow">
-      <Row className="min-vh-100 bg-white flex-md-row">
+    <Container
+      fluid
+      className="min-vh-100 my-4 overflow-hidden rounded shadow d-flex"
+    >
+      <Row className="flex-grow-1 bg-white w-100">
+        {/* Channels */}
         <Col
           xs={4}
           md={2}
@@ -50,15 +117,21 @@ const Chat = () => {
             variant="pills"
             className="flex-column px-2 mb-3 overflow-auto h-100"
           >
-            {/* channel */}
-            <Nav.Item className="w-100">
-              <Button variant="light" className="w-100 rounded-0 text-start">
-                <span className="me-1">#</span>
-                general
-              </Button>
-            </Nav.Item>
-
-            {/* active channel */}
+            {channels.map(channel => (
+              <Nav.Item key={channel.id} className="w-100">
+                <Button
+                  variant={
+                    channel.id === currentChannelId ? 'secondary' : 'light'
+                  }
+                  className="w-100 rounded-0 text-start"
+                  onClick={() => dispatch(setCurrentChannel(channel.id))}
+                >
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </Button>
+              </Nav.Item>
+            ))}
+            {/*     
             <Nav.Item className="w-100">
               <Button
                 variant="secondary"
@@ -69,7 +142,7 @@ const Chat = () => {
               </Button>
             </Nav.Item>
 
-            {/* channel with dropdown */}
+
             <Nav.Item className="w-100">
               <ButtonGroup className="d-flex w-100">
                 <Button
@@ -95,32 +168,52 @@ const Chat = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               </ButtonGroup>
-            </Nav.Item>
+            </Nav.Item> */}
           </Nav>
         </Col>
+        {/* CHAT */}
         <Col className="p-0 h-100">
           <div className="d-flex flex-column h-100">
             <div className="bg-light mb-4 p-3 shadow-sm small">
               <p className="m-0">
-                <b># list</b>
+                <b># {currentChannel?.name}</b>
               </p>
-              <span className="text-muted">1 сообщение</span>
+              <span className="text-muted">
+                {currentMessages.length} сообщений
+              </span>
             </div>
-            <div id="messages-box" className="chat-messages overflow-auto px-5">
-              <div className="text-break mb-2"></div>
+            {/* MESSAGES */}
+            <div
+              id="messages-box"
+              className="chat-messages flex-grow-1 overflow-auto px-5"
+            >
+              {' '}
+              {currentMessages.map(m => (
+                <div key={m.id} className="text-break mb-2">
+                  <b> {m.username} </b>: {m.body}
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
             </div>
-            <div className="mt-auto px-5 py-3">
-              <form noValidate className="py-1 border rounded-2">
+            {/* INPUT */}
+            <div id="input-message" className="px-5 py-3">
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                autoComplete="off"
+                className="py-1 border rounded-2"
+              >
                 <div className="input-group has-validation">
                   <input
-                    name="body"
+                    value={text}
+                    onChange={e => setText(e.target.value)}
                     aria-label="Новое сообщение"
                     placeholder="Введите сообщение..."
                     className="border-0 p-0 ps-2 form-control"
                   />
                   <button
                     type="submit"
-                    disabled
+                    disabled={sending || !text.trim()}
                     className="btn btn-group-vertical"
                   >
                     <svg

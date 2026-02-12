@@ -10,15 +10,20 @@ export const sendMessage = createAsyncThunk('messages/send', async message => {
 const messagesSlice = createSlice({
   name: 'messages',
   initialState: {
-    items: [],
+    list: [],
     status: 'idle',
   },
   reducers: {
     addMessage(state, action) {
-      state.items.push(action.payload)
+      state.list.push(action.payload)
     },
     setMessages(state, action) {
-      state.items = action.payload
+      state.list = action.payload
+    },
+    removeMessagesByChannel(state, action) {
+      state.list = state.list.filter(
+        message => message.channelId !== action.payload,
+      )
     },
   },
   extraReducers: builder => {
@@ -32,5 +37,6 @@ const messagesSlice = createSlice({
   },
 })
 
-export const { addMessage, setMessages } = messagesSlice.actions
+export const { addMessage, setMessages, removeMessagesByChannel } =
+  messagesSlice.actions
 export default messagesSlice.reducer

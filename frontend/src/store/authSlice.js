@@ -8,7 +8,8 @@ export const login = createAsyncThunk(
     try {
       const { data } = await api.post('/login', { username, password })
       localStorage.setItem('token', data.token)
-      return data.token
+      localStorage.setItem('username', username)
+      return { token: data.token, username }
     } catch {
       return rejectWithValue('Неверный логин или пароль')
     }
@@ -20,13 +21,16 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     token: localStorage.getItem('token'),
+    username: localStorage.getItem('username'),
     status: 'idle', // idle | loading | success | error
     error: null,
   },
   reducers: {
     logout(state) {
       state.token = null
+      state.username = null
       localStorage.removeItem('token')
+      localStorage.removeItem('username')
     },
   },
   extraReducers: builder => {
@@ -37,7 +41,8 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, { payload }) => {
         state.status = 'success'
-        state.token = payload
+        state.token = payload.token
+        state.username = payload.username
       })
       .addCase(login.rejected, (state, { payload }) => {
         state.status = 'error'

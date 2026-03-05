@@ -9,6 +9,7 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:5001',
         rewrite: path => path.replace(/^\/api/, '/api/v1'),
+        changeOrigin: true,
       },
       '/socket.io': {
         target: 'ws://localhost:5001',

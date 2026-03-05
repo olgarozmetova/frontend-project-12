@@ -4,8 +4,12 @@ import { setChannels } from './channelsSlice'
 import { setMessages } from './messagesSlice'
 
 export const initApp = createAsyncThunk('app/init', async (_, { dispatch }) => {
-  const { data } = await api.get('/data')
+  const [channelsRes, messagesRes] = await Promise.all([
+    api.get('/channels'),
+    api.get('/messages'),
+  ])
 
-  dispatch(setChannels(data.channels))
-  dispatch(setMessages(data.messages))
+  // Sending data to the store
+  dispatch(setChannels(channelsRes.data))
+  dispatch(setMessages(messagesRes.data))
 })

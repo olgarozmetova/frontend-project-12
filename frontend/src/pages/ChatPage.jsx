@@ -172,11 +172,8 @@ const Chat = () => {
 
   return (
     <>
-      <Container
-        fluid
-        className="min-vh-100 my-4 overflow-hidden rounded shadow d-flex"
-      >
-        <Row className="flex-grow-1 bg-white w-100">
+      <Container className="vh-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white flex-md-row">
           {/* Channels */}
           <Col
             xs={4}
@@ -255,7 +252,7 @@ const Chat = () => {
           </Col>
 
           {/* CHAT */}
-          <Col className="p-0 h-100">
+          <Col className="p-0 h-100 d-flex flex-column">
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
@@ -375,7 +372,7 @@ const Chat = () => {
                     ? 'Загрузка...'
                     : modalType === 'remove'
                       ? 'Удалить'
-                      : 'Отменить'}
+                      : 'Отправить'}
                 </Button>
               </Modal.Footer>
             </FormikForm>

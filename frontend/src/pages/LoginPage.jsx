@@ -43,8 +43,13 @@ const Login = () => {
                 <Col xs={12} md={6} className="mt-3 mt-md-0">
                   <Formik
                     initialValues={{ username: '', password: '' }}
-                    onSubmit={values => {
-                      dispatch(login(values))
+                    onSubmit={async values => {
+                      try {
+                        await dispatch(login(values)).unwrap()
+                        navigate('/') // transition only after successful login
+                      } catch (err) {
+                        console.error(err)
+                      }
                     }}
                   >
                     <FormikForm>

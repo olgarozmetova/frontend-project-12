@@ -98,13 +98,18 @@ const Chat = () => {
     e.preventDefault()
     if (!currentChannelId || !text.trim()) return
 
+    if (!username) {
+      alert('Вы не авторизованы')
+      return
+    }
+
     setSending(true)
 
     try {
       await api.post('/messages', {
         body: text,
         channelId: currentChannelId,
-        username, // pass the name of the current user
+        username, //pass the name of the current user
       })
       setText('')
       inputRef.current?.focus() // return focus to the input field
@@ -270,7 +275,7 @@ const Chat = () => {
               >
                 {currentMessages.map(m => (
                   <div key={m.id} className="text-break mb-2">
-                    <b> {m.username} </b>: {m.body}
+                    <b>{m.username}</b>: {m.body}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />

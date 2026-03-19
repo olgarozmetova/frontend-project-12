@@ -341,6 +341,8 @@ const Chat = () => {
           initialValues={{ name: modalChannel?.name ?? '' }}
           validationSchema={modalType !== 'remove' ? channelSchema : null}
           onSubmit={handleModalSubmit}
+          validateOnBlur={false}
+          validateOnChange={false}
         >
           {({ errors, touched, isSubmitting }) => (
             <FormikForm>

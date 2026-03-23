@@ -33,6 +33,7 @@ const Login = () => {
           <Card className="shadow-sm bg-white">
             <Card.Body className="p-5">
               <Row>
+                {/* Image */}
                 <Col
                   xs={12}
                   md={6}
@@ -40,6 +41,8 @@ const Login = () => {
                 >
                   <Image src="/form.img.svg" roundedCircle alt="Войти" fluid />
                 </Col>
+
+                {/* Form */}
                 <Col xs={12} md={6} className="mt-3 mt-md-0">
                   <Formik
                     initialValues={{ username: '', password: '' }}
@@ -54,6 +57,8 @@ const Login = () => {
                   >
                     <FormikForm>
                       <h1 className="text-center mb-4">Войти</h1>
+
+                      {/* Username */}
                       <Form.Group
                         className="mb-3 form-floating"
                         controlId="username"
@@ -67,6 +72,7 @@ const Login = () => {
                         <Form.Label>Ваш ник</Form.Label>
                       </Form.Group>
 
+                      {/* Password */}
                       <Form.Group
                         className="mb-3 form-floating"
                         controlId="password"
@@ -82,6 +88,7 @@ const Login = () => {
 
                       {error && <div className="text-danger mb-2">{error}</div>}
 
+                      {/* Submit */}
                       <Button
                         type="submit"
                         disabled={status === 'loading'}
@@ -95,6 +102,8 @@ const Login = () => {
                 </Col>
               </Row>
             </Card.Body>
+
+            {/* Footer */}
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>Нет аккаунта? </span>

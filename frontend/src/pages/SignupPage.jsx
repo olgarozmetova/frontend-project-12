@@ -1,3 +1,5 @@
+import { useDispatch } from 'react-redux'
+import { setAuth } from '../store/authSlice'
 import { Formik, Form as FormikForm, Field } from 'formik'
 import * as Yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
@@ -15,6 +17,7 @@ import {
 
 const Signup = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const schema = Yup.object().shape({
     username: Yup.string()
@@ -68,6 +71,14 @@ const Signup = () => {
 
                         localStorage.setItem('token', data.token)
                         localStorage.setItem('username', data.username)
+
+                        // update Redux
+                        dispatch(
+                          setAuth({
+                            token: data.token,
+                            username: data.username,
+                          }),
+                        )
 
                         navigate('/')
                       } catch (err) {

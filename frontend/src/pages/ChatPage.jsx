@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import socket from '../socket/socket'
 import api from '../api/api'
 import { initApp } from '../store/initSlice'
@@ -31,6 +32,7 @@ import {
 } from '../components/bootstrap'
 
 const Chat = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
 
   const {
@@ -186,7 +188,7 @@ const Chat = () => {
             className="border-end px-0 bg-light h-100 d-flex flex-column"
           >
             <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-              <b>Каналы</b>
+              <b>{t('channels.title')}</b>
               <Button
                 variant="link"
                 className="p-0 text-primary"
@@ -240,12 +242,12 @@ const Chat = () => {
                           <Dropdown.Item
                             onClick={() => openModal('rename', channel)}
                           >
-                            Переименовать
+                            {t('channels.rename')}
                           </Dropdown.Item>
                           <Dropdown.Item
                             onClick={() => openModal('remove', channel)}
                           >
-                            Удалить
+                            {t('channels.remove')}
                           </Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>
@@ -294,8 +296,8 @@ const Chat = () => {
                       ref={inputRef}
                       value={text}
                       onChange={e => setText(e.target.value)}
-                      aria-label="Новое сообщение"
-                      placeholder="Введите сообщение..."
+                      aria-label={t('messages.newMessage')}
+                      placeholder={t('messages.placeholder')}
                       className="border-0 p-0 ps-2 form-control"
                       disabled={sending}
                     />
@@ -317,7 +319,9 @@ const Chat = () => {
                           d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm4.5 5.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"
                         />
                       </svg>
-                      <span className="visually-hidden">Отправить</span>
+                      <span className="visually-hidden">
+                        {t('messages.send')}
+                      </span>
                     </button>
                   </div>
                 </form>
@@ -331,9 +335,9 @@ const Chat = () => {
       <Modal show={modalOpen} onHide={closeModal}>
         <Modal.Header closeButton>
           <Modal.Title>
-            {modalType === 'add' && 'Добавить канал'}
-            {modalType === 'rename' && 'Переименовать канал'}
-            {modalType === 'remove' && 'Удалить канал'}
+            {modalType === 'add' && t('modals.add')}
+            {modalType === 'rename' && t('modals.rename')}
+            {modalType === 'remove' && t('modals.remove')}
           </Modal.Title>
         </Modal.Header>
         <Formik
@@ -359,7 +363,7 @@ const Chat = () => {
                     )}
                   </>
                 ) : (
-                  <p>Уверены?</p>
+                  <p>{t('modals.removeConfirm')}</p>
                 )}
               </Modal.Body>
               <Modal.Footer>
@@ -368,7 +372,7 @@ const Chat = () => {
                   onClick={closeModal}
                   disabled={isSubmitting}
                 >
-                  Отменить
+                  {t('modals.cancel')}
                 </Button>
                 <Button
                   type="submit"
@@ -376,10 +380,10 @@ const Chat = () => {
                   disabled={isSubmitting}
                 >
                   {isSubmitting
-                    ? 'Загрузка...'
+                    ? t('modals.loading')
                     : modalType === 'remove'
-                      ? 'Удалить'
-                      : 'Отправить'}
+                      ? t('channels.remove')
+                      : t('modals.send')}
                 </Button>
               </Modal.Footer>
             </FormikForm>

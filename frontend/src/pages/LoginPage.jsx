@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Formik, Form as FormikForm, Field } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -15,6 +16,7 @@ import {
 } from '../components/bootstrap'
 
 const Login = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -56,7 +58,9 @@ const Login = () => {
                     }}
                   >
                     <FormikForm>
-                      <h1 className="text-center mb-4">Войти</h1>
+                      <h1 className="text-center mb-4">
+                        {t('loginPage.title')}
+                      </h1>
 
                       {/* Username */}
                       <Form.Group
@@ -67,9 +71,9 @@ const Login = () => {
                           name="username"
                           as={Form.Control}
                           type="text"
-                          placeholder="Ваш ник"
+                          placeholder={t('loginPage.usernamePlaceholder')}
                         />
-                        <Form.Label>Ваш ник</Form.Label>
+                        <Form.Label>{t('loginPage.username')}</Form.Label>
                       </Form.Group>
 
                       {/* Password */}
@@ -81,9 +85,9 @@ const Login = () => {
                           name="password"
                           as={Form.Control}
                           type="password"
-                          placeholder="Пароль"
+                          placeholder={t('loginPage.passwordPlaceholder')}
                         />
-                        <Form.Label>Пароль</Form.Label>
+                        <Form.Label>{t('loginPage.password')}</Form.Label>
                       </Form.Group>
 
                       {error && <div className="text-danger mb-2">{error}</div>}
@@ -95,7 +99,9 @@ const Login = () => {
                         className="w-100 mt-2 mb-3"
                         variant="outline-primary"
                       >
-                        {status === 'loading' ? 'Вход...' : 'Войти'}
+                        {status === 'loading'
+                          ? t('loginPage.loginProcess')
+                          : t('loginPage.login')}
                       </Button>
                     </FormikForm>
                   </Formik>
@@ -106,8 +112,8 @@ const Login = () => {
             {/* Footer */}
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>Нет аккаунта? </span>
-                <Link to="/signup">Регистрация</Link>
+                <span>{t('loginPage.noAccount')} </span>
+                <Link to="/signup">{t('loginPage.signup')}</Link>
               </div>
             </Card.Footer>
           </Card>

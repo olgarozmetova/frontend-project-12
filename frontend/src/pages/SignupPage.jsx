@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { setAuth } from '../store/authSlice'
+import { useTranslation } from 'react-i18next'
 import { Formik, Form as FormikForm, Field } from 'formik'
 import * as Yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
@@ -16,20 +17,21 @@ import {
 } from '../components/bootstrap'
 
 const Signup = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const schema = Yup.object().shape({
     username: Yup.string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('signupPage.validation.usernameLength'))
+      .max(20, t('signupPage.validation.usernameLength'))
+      .required(t('signupPage.validation.required')),
     password: Yup.string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательное поле'),
+      .min(6, t('signupPage.validation.passwordMin'))
+      .required(t('signupPage.validation.required')),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password')], 'Пароли должны совпадать')
-      .required('Обязательное поле'),
+      .oneOf([Yup.ref('password')], t('signupPage.validation.passwordsMatch'))
+      .required(t('signupPage.validation.required')),
   })
 
   return (
@@ -84,7 +86,7 @@ const Signup = () => {
                       } catch (err) {
                         if (err.response?.status === 409) {
                           setErrors({
-                            username: 'Такой пользователь уже существует',
+                            username: t('signupPage.errors.userExists'),
                           })
                         } else {
                           console.error(err)
@@ -96,7 +98,9 @@ const Signup = () => {
                   >
                     {({ errors, touched, isSubmitting }) => (
                       <FormikForm>
-                        <h1 className="text-center mb-4">Регистрация</h1>
+                        <h1 className="text-center mb-4">
+                          {t('signupPage.title')}
+                        </h1>
 
                         {/* Username */}
                         <Form.Group
@@ -107,14 +111,14 @@ const Signup = () => {
                             name="username"
                             as={Form.Control}
                             type="text"
-                            placeholder="Имя пользователя"
+                            placeholder={t('signupPage.usernamePlaceholder')}
                             className={
                               errors.username && touched.username
                                 ? 'is-invalid'
                                 : ''
                             }
                           />
-                          <Form.Label>Имя пользователя</Form.Label>
+                          <Form.Label>{t('signupPage.username')}</Form.Label>
                           {errors.username && touched.username && (
                             <div className="invalid-feedback">
                               {errors.username}
@@ -131,14 +135,14 @@ const Signup = () => {
                             name="password"
                             as={Form.Control}
                             type="password"
-                            placeholder="Пароль"
+                            placeholder={t('signupPage.passwordPlaceholder')}
                             className={
                               errors.password && touched.password
                                 ? 'is-invalid'
                                 : ''
                             }
                           />
-                          <Form.Label>Пароль</Form.Label>
+                          <Form.Label>{t('signupPage.password')}</Form.Label>
                           {errors.password && touched.password && (
                             <div className="invalid-feedback">
                               {errors.password}
@@ -155,14 +159,18 @@ const Signup = () => {
                             name="confirmPassword"
                             as={Form.Control}
                             type="password"
-                            placeholder="Подтверждение пароля"
+                            placeholder={t(
+                              'signupPage.passwordConfirmationPlaceholder',
+                            )}
                             className={
                               errors.confirmPassword && touched.confirmPassword
                                 ? 'is-invalid'
                                 : ''
                             }
                           />
-                          <Form.Label>Подтверждение пароля</Form.Label>
+                          <Form.Label>
+                            {t('signupPage.passwordConfirmation')}
+                          </Form.Label>
                           {errors.confirmPassword &&
                             touched.confirmPassword && (
                               <div className="invalid-feedback">
@@ -179,8 +187,8 @@ const Signup = () => {
                           variant="outline-primary"
                         >
                           {isSubmitting
-                            ? 'Регистрация...'
-                            : 'Зарегистрироваться'}
+                            ? t('signupPage.signupProcess')
+                            : t('signupPage.signup')}
                         </Button>
                       </FormikForm>
                     )}
@@ -188,6 +196,14 @@ const Signup = () => {
                 </Col>
               </Row>
             </Card.Body>
+
+            {/* Footer */}
+            <Card.Footer className="p-4">
+              <div className="text-center">
+                <span>{t('signupPage.hasAccount')} </span>
+                <Link to="/login">{t('signupPage.login')}</Link>
+              </div>
+            </Card.Footer>
           </Card>
         </Col>
       </Row>

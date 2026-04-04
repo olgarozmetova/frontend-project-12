@@ -42,6 +42,7 @@ const Chat = () => {
   } = useSelector(state => state.channels)
   const messages = useSelector(state => state.messages.list)
   const username = useSelector(state => state.auth.username)
+  const error = useSelector(state => state.channels.error)
 
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
@@ -99,11 +100,6 @@ const Chat = () => {
   const handleSubmit = async e => {
     e.preventDefault()
     if (!currentChannelId || !text.trim()) return
-
-    if (!username) {
-      alert('Вы не авторизованы')
-      return
-    }
 
     setSending(true)
 
@@ -352,6 +348,8 @@ const Chat = () => {
           {({ errors, touched, isSubmitting }) => (
             <FormikForm>
               <Modal.Body>
+                {error && <div className="alert alert-danger">{t(error)}</div>}
+
                 {modalType !== 'remove' ? (
                   <>
                     <Field

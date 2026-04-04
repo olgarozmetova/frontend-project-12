@@ -7,9 +7,7 @@ export default {
     loginPage: {
       title: 'Войти',
       username: 'Ваш ник',
-      usernamePlaceholder: 'Ваш ник',
       password: 'Пароль',
-      passwordPlaceholder: 'Пароль',
       loginProcess: 'Вход...',
       login: 'Войти',
       noAccount: 'Нет аккаунта?',
@@ -50,6 +48,11 @@ export default {
         maxLength: 'Максимум 20 символов',
         required: 'Обязательное поле',
         duplicate: 'Имя уже используется',
+      },
+      errors: {
+        create: 'Ошибка создания канала',
+        rename: 'Ошибка переименования канала',
+        remove: 'Ошибка удаления канала',
       },
     },
     modals: {

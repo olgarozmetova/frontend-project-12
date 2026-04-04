@@ -1,8 +1,8 @@
 import { useDispatch } from 'react-redux'
 import { setAuth } from '../store/authSlice'
 import { useTranslation } from 'react-i18next'
+import { configureSignupSchema } from '../validation/signupSchema'
 import { Formik, Form as FormikForm, Field } from 'formik'
-import * as Yup from 'yup'
 import { Link, useNavigate } from 'react-router-dom'
 import api from '../api/api'
 
@@ -21,18 +21,7 @@ const Signup = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const schema = Yup.object().shape({
-    username: Yup.string()
-      .min(3, t('signupPage.validation.usernameLength'))
-      .max(20, t('signupPage.validation.usernameLength'))
-      .required(t('signupPage.validation.required')),
-    password: Yup.string()
-      .min(6, t('signupPage.validation.passwordMin'))
-      .required(t('signupPage.validation.required')),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password')], t('signupPage.validation.passwordsMatch'))
-      .required(t('signupPage.validation.required')),
-  })
+  const schema = configureSignupSchema(t)
 
   return (
     <Container fluid className="min-vh-100">
@@ -111,7 +100,7 @@ const Signup = () => {
                             name="username"
                             as={Form.Control}
                             type="text"
-                            placeholder={t('signupPage.usernamePlaceholder')}
+                            placeholder={t('signupPage.username')}
                             className={
                               errors.username && touched.username
                                 ? 'is-invalid'
@@ -135,7 +124,7 @@ const Signup = () => {
                             name="password"
                             as={Form.Control}
                             type="password"
-                            placeholder={t('signupPage.passwordPlaceholder')}
+                            placeholder={t('signupPage.password')}
                             className={
                               errors.password && touched.password
                                 ? 'is-invalid'
@@ -159,9 +148,7 @@ const Signup = () => {
                             name="confirmPassword"
                             as={Form.Control}
                             type="password"
-                            placeholder={t(
-                              'signupPage.passwordConfirmationPlaceholder',
-                            )}
+                            placeholder={t('signupPage.passwordConfirmation')}
                             className={
                               errors.confirmPassword && touched.confirmPassword
                                 ? 'is-invalid'

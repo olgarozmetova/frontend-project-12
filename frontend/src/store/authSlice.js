@@ -12,7 +12,7 @@ export const login = createAsyncThunk(
       localStorage.setItem('username', username)
       return { token: data.token, username }
     } catch {
-      return rejectWithValue('Неверный логин или пароль')
+      return rejectWithValue('loginPage.error')
     }
   },
 )

@@ -14,15 +14,16 @@ export default {
       login: 'Войти',
       noAccount: 'Нет аккаунта?',
       signup: 'Регистрация',
+      validation: {
+        required: 'Обязательное поле',
+      },
+      error: 'Неверный логин или пароль',
     },
     signupPage: {
       title: 'Регистрация',
       username: 'Имя пользователя',
-      usernamePlaceholder: 'Имя пользователя',
       password: 'Пароль',
-      passwordPlaceholder: 'Пароль',
       passwordConfirmation: 'Подтвердите пароль',
-      passwordConfirmationPlaceholder: 'Подтвердите пароль',
       signupProcess: 'Регистрация...',
       signup: 'Зарегистрироваться',
       hasAccount: 'Уже есть аккаунт?',
@@ -44,6 +45,12 @@ export default {
       title: 'Каналы',
       rename: 'Переименовать',
       remove: 'Удалить',
+      validation: {
+        minLength: 'Минимум 3 символа',
+        maxLength: 'Максимум 20 символов',
+        required: 'Обязательное поле',
+        duplicate: 'Имя уже используется',
+      },
     },
     modals: {
       add: 'Добавить канал',

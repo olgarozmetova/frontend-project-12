@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { configureLoginSchema } from '../validation/loginSchema'
 import { Formik, Form as FormikForm, Field } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -19,6 +20,8 @@ const Login = () => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
+
+  const schema = configureLoginSchema(t)
 
   const { token, status, error } = useSelector(state => state.auth)
 
@@ -48,6 +51,7 @@ const Login = () => {
                 <Col xs={12} md={6} className="mt-3 mt-md-0">
                   <Formik
                     initialValues={{ username: '', password: '' }}
+                    validationSchema={schema}
                     onSubmit={async values => {
                       try {
                         await dispatch(login(values)).unwrap()
@@ -71,7 +75,7 @@ const Login = () => {
                           name="username"
                           as={Form.Control}
                           type="text"
-                          placeholder={t('loginPage.usernamePlaceholder')}
+                          placeholder={t('loginPage.username')}
                         />
                         <Form.Label>{t('loginPage.username')}</Form.Label>
                       </Form.Group>
@@ -85,12 +89,14 @@ const Login = () => {
                           name="password"
                           as={Form.Control}
                           type="password"
-                          placeholder={t('loginPage.passwordPlaceholder')}
+                          placeholder={t('loginPage.password')}
                         />
                         <Form.Label>{t('loginPage.password')}</Form.Label>
                       </Form.Group>
 
-                      {error && <div className="text-danger mb-2">{error}</div>}
+                      {error && (
+                        <div className="text-danger mb-2">{t(error)}</div>
+                      )}
 
                       {/* Submit */}
                       <Button

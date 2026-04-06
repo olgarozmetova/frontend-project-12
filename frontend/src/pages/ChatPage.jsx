@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toastify'
 import socket from '../socket/socket'
 import api from '../api/api'
 import { initApp } from '../store/initSlice'
@@ -56,8 +57,17 @@ const Chat = () => {
 
   // INIT: Receive data (channels + messages)
   useEffect(() => {
-    dispatch(initApp())
-  }, [dispatch])
+    const init = async () => {
+      try {
+        await dispatch(initApp()).unwrap()
+      } catch (err) {
+        console.error(err)
+        toast.error(t('toast.loadingError'))
+      }
+    }
+
+    init()
+  }, [dispatch, t])
 
   // Connect WebSocket to subscribe to all events
   useEffect(() => {
@@ -71,16 +81,19 @@ const Chat = () => {
 
     socket.on('newChannel', channel => {
       dispatch(addChannel(channel))
+      toast.success(t('toast.channelCreated'))
     })
 
     socket.on('renameChannel', channel => {
       dispatch(renameChannel({ id: channel.id, name: channel.name }))
+      toast.success(t('toast.channelRenamed'))
     })
 
     // When another user deletes a channel, the messages are also deleted
     socket.on('removeChannel', ({ id }) => {
       dispatch(removeChannel(id))
       dispatch(removeMessagesByChannel(id))
+      toast.success(t('toast.channelRemoved'))
     })
 
     return () => {
@@ -89,7 +102,7 @@ const Chat = () => {
       socket.off('renameChannel')
       socket.off('removeChannel')
     }
-  }, [dispatch])
+  }, [dispatch, t])
 
   // Autoscroll to the last message
   useEffect(() => {
@@ -112,7 +125,7 @@ const Chat = () => {
       setText('')
       inputRef.current?.focus() // return focus to the input field
     } catch {
-      alert('Ошибка отправки сообщения. Проверьте соединение.')
+      toast.error(t('toast.networkError'))
     } finally {
       setSending(false)
     }

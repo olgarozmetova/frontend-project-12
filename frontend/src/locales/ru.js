@@ -69,5 +69,12 @@ export default {
       send: 'Отправить',
       newMessage: 'Новое сообщение',
     },
+    toast: {
+      channelCreated: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelRemoved: 'Канал удалён',
+      networkError: 'Ошибка соединения',
+      loadingError: 'Ошибка при загрузке данных',
+    },
   },
 }

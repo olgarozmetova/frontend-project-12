@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toastify'
+import profanityFilter from '../utils/profanityFilter'
 import socket from '../socket/socket'
 import api from '../api/api'
 import { initApp } from '../store/initSlice'
@@ -76,7 +77,11 @@ const Chat = () => {
     }
 
     socket.on('newMessage', message => {
-      dispatch(addMessage(message))
+      const cleanMessage = {
+        ...message,
+        body: profanityFilter(message.body),
+      }
+      dispatch(addMessage(cleanMessage))
     })
 
     socket.on('newChannel', channel => {
@@ -117,8 +122,10 @@ const Chat = () => {
     setSending(true)
 
     try {
+      const cleanText = profanityFilter(text)
+
       await api.post('/messages', {
-        body: text,
+        body: cleanText,
         channelId: currentChannelId,
         username, //pass the name of the current user
       })
@@ -160,14 +167,16 @@ const Chat = () => {
 
   // Submitting the modal window form
   const handleModalSubmit = async (values, { setSubmitting }) => {
+    const cleanName = profanityFilter(values.name)
+
     try {
       if (modalType === 'add') {
-        const channel = await dispatch(createChannel(values.name)).unwrap()
+        const channel = await dispatch(createChannel(cleanName)).unwrap()
         // Switch to a new channel
         dispatch(setCurrentChannel(channel.id))
       } else if (modalType === 'rename') {
         await dispatch(
-          updateChannel({ id: modalChannel.id, name: values.name }),
+          updateChannel({ id: modalChannel.id, name: cleanName }),
         ).unwrap()
       } else if (modalType === 'remove') {
         await dispatch(deleteChannel(modalChannel.id)).unwrap()

@@ -4,6 +4,7 @@ import { configureLoginSchema } from '../validation/loginSchema'
 import { Formik, Form as FormikForm, Field } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { useRollbar } from '@rollbar/react'
 import { login } from '../store/authSlice'
 
 import {
@@ -18,6 +19,7 @@ import {
 
 const Login = () => {
   const { t } = useTranslation()
+  const rollbar = useRollbar()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -58,6 +60,8 @@ const Login = () => {
                         navigate('/') // transition only after successful login
                       } catch (err) {
                         console.error(err)
+                        // Send error to Rollbar
+                        rollbar.error('Ошибка при логине', err)
                       }
                     }}
                   >

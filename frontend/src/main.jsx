@@ -9,8 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import './index.css'
 
 const rollbarConfig = {
-  accessToken: import.meta.env.VITE_ROLLBAR_TOKEN,
-  environment: 'production',
+  accessToken: import.meta.env.VITE_ROLLBAR_ACCESS_TOKEN,
+  environment: import.meta.env.MODE || 'development',
   captureUncaught: true,
   captureUnhandledRejections: true,
 }

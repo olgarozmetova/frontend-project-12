@@ -15,7 +15,7 @@ export default {
       validation: {
         required: 'Обязательное поле',
       },
-      error: 'Неверный логин или пароль',
+      error: 'Неверные имя пользователя или пароль',
     },
     signupPage: {
       title: 'Регистрация',

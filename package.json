@@ -16,7 +16,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "start": "npx serve -s frontend/dist -l 3000",
+    "start": "npx serve -s frontend/dist -l $PORT",
     "postinstall": "cd frontend && npm ci"
   },
   "dependencies": {

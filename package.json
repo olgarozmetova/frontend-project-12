@@ -16,14 +16,14 @@
   "main": "src/index.js",
   "scripts": {
     "build": "npm run build --prefix frontend",
-    "start": "start-server -s ./frontend/dist",
+    "start": "npx serve -s frontend/dist -l 3000",
     "postinstall": "cd frontend && npm ci"
   },
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4"
+    "@hexlet/chat-server": "^2.0.4",
+    "serve": "^14.2.6"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
-    "@types/node": "^25.6.0"
+    "@playwright/test": "^1.59.1"
   }
 }

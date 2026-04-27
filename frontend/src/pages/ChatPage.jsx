@@ -243,6 +243,7 @@ const Chat = () => {
                       }
                       className="w-100 rounded-0 text-start text-truncate"
                       onClick={() => dispatch(setCurrentChannel(channel.id))}
+                      aria-label={channel.name}
                     >
                       <span className="me-1">#</span>
                       {channel.name}

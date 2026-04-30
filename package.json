@@ -20,10 +20,6 @@
     "postinstall": "cd frontend && npm ci"
   },
   "dependencies": {
-    "@hexlet/chat-server": "^2.0.4",
-    "serve": "^14.2.6"
-  },
-  "devDependencies": {
-    "@playwright/test": "^1.59.1"
+    "@hexlet/chat-server": "^2.0.4"
   }
 }

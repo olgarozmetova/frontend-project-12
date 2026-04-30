@@ -5,8 +5,7 @@ build:
 	cd frontend && npm ci && npm run build
 
 start:
-	npx hexlet/chat-server & \
-	npx start-server -s ./frontend/dist
+	npx @hexlet/chat-server -s ./frontend/dist
 
 # start:
 # npx start-server -s ./frontend/dist

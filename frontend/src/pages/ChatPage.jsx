@@ -46,6 +46,8 @@ const Chat = () => {
   const username = useSelector(state => state.auth.username)
   const error = useSelector(state => state.channels.error)
 
+  console.log('channels:', channels)
+
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
   const messagesEndRef = useRef(null)

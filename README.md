@@ -30,7 +30,7 @@ Chat (Slack) is a real-time single-page chat application built with React. It al
 
 ---
 
-## 🚀 Technologies
+## ⚙️ Technologies
 
 ### Frontend
 
@@ -88,31 +88,3 @@ Open the application at: http://localhost:5001
 make lint
 
 ```
-
-## Main Features
-
-### Authentication
-
-- Registration
-- Login
-- Logout
-
-### Channels
-
-Users can:
-
-- Create channels
-- Rename channels
-- Delete channels
-
-### Messages
-
-- Real-time chat
-- Auto scroll
-- Message counter
-
-### Security
-
-- Profanity filtering
-- Toast notifications
-- Error monitoring with Rollbar

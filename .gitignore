@@ -22,6 +22,7 @@ yarn-error.log*
 
 # Playwright
 node_modules/
+/tests
 /test-results/
 /playwright-report/
 /blob-report/

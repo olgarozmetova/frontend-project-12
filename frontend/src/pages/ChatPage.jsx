@@ -371,9 +371,12 @@ const Chat = () => {
 
                 {modalType !== 'remove' ? (
                   <>
-                    <label className="form-label">{t('channels.name')}</label>
+                    <label className="form-label" htmlFor="channel-name">
+                      {t('channels.name')}
+                    </label>
 
                     <Field
+                      id="channel-name"
                       name="name"
                       className={`form-control ${errors.name && touched.name ? 'is-invalid' : ''}`}
                       autoFocus

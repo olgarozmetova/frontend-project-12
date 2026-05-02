@@ -157,8 +157,13 @@ const Chat = () => {
   const channelSchema = yup.object().shape({
     name: yup
       .string()
-      .min(3, t('channels.validation.minLength'))
-      .max(20, t('channels.validation.maxLength'))
+      /*    .min(3, t('channels.validation.minLength'))
+      .max(20, t('channels.validation.maxLength')) */
+      .test(
+        'length',
+        t('channels.validation.length'),
+        value => value && value.length >= 3 && value.length <= 20,
+      )
       .test(
         'unique',
         t('channels.validation.duplicate'),
@@ -378,10 +383,10 @@ const Chat = () => {
                     <Field
                       id="channel-name"
                       name="name"
-                      className={`form-control ${errors.name && touched.name ? 'is-invalid' : ''}`}
+                      className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                       autoFocus
                     />
-                    {errors.name && touched.name && (
+                    {errors.name && (
                       <div className="invalid-feedback">{errors.name}</div>
                     )}
                   </>

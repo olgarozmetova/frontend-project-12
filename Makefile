@@ -7,8 +7,5 @@ build:
 start:
 	npx @hexlet/chat-server -s ./frontend/dist
 
-# start:
-# npx start-server -s ./frontend/dist
-
 lint:
 	cd frontend && npm run lint

@@ -43,6 +43,7 @@ export default {
       title: 'Каналы',
       rename: 'Переименовать',
       remove: 'Удалить',
+      add: 'Добавить канал',
       validation: {
         minLength: 'Минимум 3 символа',
         maxLength: 'Максимум 20 символов',

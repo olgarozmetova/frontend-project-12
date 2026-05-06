@@ -255,15 +255,21 @@ const Chat = () => {
                               ? 'secondary'
                               : 'light'
                           }
-                          aria-label={t('channels.manage')}
-                        />
-                        <Dropdown.Menu>
-                          {/*     <span className="visually-hidden">
+                        >
+                          <span className="visually-hidden">
                             {t('channels.manage')}
                           </span>
-                      <Dropdown.Header className="visually-hidden">
-                            Управление каналом
-                          </Dropdown.Header> */}
+                        </Dropdown.Toggle>
+                        {/*        <Dropdown.Toggle
+                          split
+                          variant={
+                            channel.id === currentChannelId
+                              ? 'secondary'
+                              : 'light'
+                          }
+                          aria-label={t('channels.manage')}
+                        /> */}
+                        <Dropdown.Menu>
                           <Dropdown.Item
                             onClick={() => openModal('rename', channel)}
                           >

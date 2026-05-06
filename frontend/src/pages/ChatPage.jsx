@@ -257,9 +257,12 @@ const Chat = () => {
                           }
                         />
                         <Dropdown.Menu>
-                          <Dropdown.Header className="visually-hidden">
+                          <span className="visually-hidden">
+                            {t('channels.manage')}
+                          </span>
+                          {/*    <Dropdown.Header className="visually-hidden">
                             Управление каналом
-                          </Dropdown.Header>
+                          </Dropdown.Header> */}
                           <Dropdown.Item
                             onClick={() => openModal('rename', channel)}
                           >

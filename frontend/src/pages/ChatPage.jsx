@@ -257,8 +257,8 @@ const Chat = () => {
                           }
                         />
                         <Dropdown.Menu>
-                          <Dropdown.Header>
-                            {t('channels.manage')}
+                          <Dropdown.Header className="visually-hidden">
+                            Управление каналом
                           </Dropdown.Header>
                           <Dropdown.Item
                             onClick={() => openModal('rename', channel)}
@@ -287,7 +287,8 @@ const Chat = () => {
                   <b># {currentChannel?.name}</b>
                 </p>
                 <span className="text-muted">
-                  {currentMessages.length} сообщений
+                  {t('messagesCount', { count: currentMessages.length })}
+                  {/*  {currentMessages.length} сообщений */}
                 </span>
               </div>
 
@@ -369,7 +370,7 @@ const Chat = () => {
           validateOnBlur={false}
           validateOnChange={false}
         >
-          {({ errors, touched, isSubmitting }) => (
+          {({ errors, isSubmitting }) => (
             <FormikForm>
               <Modal.Body>
                 {error && <div className="alert alert-danger">{t(error)}</div>}

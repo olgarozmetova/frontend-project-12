@@ -73,6 +73,9 @@ export default {
       send: 'Отправить',
       newMessage: 'Новое сообщение',
     },
+    messagesCount_one: '{{count}} сообщение',
+    messagesCount_few: '{{count}} сообщения',
+    messagesCount_many: '{{count}} сообщений',
     toast: {
       channelCreated: 'Канал создан',
       channelRenamed: 'Канал переименован',

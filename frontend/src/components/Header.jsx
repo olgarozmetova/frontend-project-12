@@ -8,7 +8,7 @@ function Header() {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const token = useSelector((state) => state.auth.token)
+  const token = useSelector(state => state.auth.token)
 
   const handleLogout = () => {
     dispatch(logout())

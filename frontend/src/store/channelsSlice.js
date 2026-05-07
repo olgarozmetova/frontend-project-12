@@ -11,7 +11,7 @@ const channelsSlice = createSlice({
     setChannels(state, action) {
       state.list = action.payload
 
-      const generalChannel = action.payload.find((c) => c.name === 'general')
+      const generalChannel = action.payload.find(c => c.name === 'general')
 
       state.defaultChannelId =
         generalChannel?.id ?? action.payload[0]?.id ?? null
@@ -24,7 +24,7 @@ const channelsSlice = createSlice({
       state.list.push(action.payload)
     },
     removeChannel(state, action) {
-      state.list = state.list.filter((c) => c.id !== action.payload)
+      state.list = state.list.filter(c => c.id !== action.payload)
       // If the current channel is deleted switch to the default one
       if (state.currentChannelId === action.payload) {
         state.currentChannelId = state.defaultChannelId
@@ -32,7 +32,7 @@ const channelsSlice = createSlice({
     },
     renameChannel(state, action) {
       const { id, name } = action.payload
-      const channel = state.list.find((c) => c.id === id)
+      const channel = state.list.find(c => c.id === id)
       if (channel) {
         channel.name = name
       }

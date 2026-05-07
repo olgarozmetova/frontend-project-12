@@ -41,10 +41,10 @@ const Chat = () => {
     list: channels,
     currentChannelId,
     defaultChannelId,
-  } = useSelector((state) => state.channels)
-  const messages = useSelector((state) => state.messages.list)
-  const username = useSelector((state) => state.auth.username)
-  const error = useSelector((state) => state.channels.error)
+  } = useSelector(state => state.channels)
+  const messages = useSelector(state => state.messages.list)
+  const username = useSelector(state => state.auth.username)
+  const error = useSelector(state => state.channels.error)
 
   // console.log('channels:', channels)
 
@@ -78,7 +78,7 @@ const Chat = () => {
       socket.connect()
     }
 
-    socket.on('newMessage', (message) => {
+    socket.on('newMessage', message => {
       const cleanMessage = {
         ...message,
         body: profanityFilter(message.body),
@@ -86,12 +86,12 @@ const Chat = () => {
       dispatch(addMessage(cleanMessage))
     })
 
-    socket.on('newChannel', (channel) => {
+    socket.on('newChannel', channel => {
       dispatch(addChannel(channel))
       toast.success(t('toast.channelCreated'))
     })
 
-    socket.on('renameChannel', (channel) => {
+    socket.on('renameChannel', channel => {
       dispatch(renameChannel({ id: channel.id, name: channel.name }))
       toast.success(t('toast.channelRenamed'))
     })
@@ -117,7 +117,7 @@ const Chat = () => {
   }, [messages, currentChannelId])
 
   // Send message
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     if (!currentChannelId || !text.trim()) return
 
@@ -162,12 +162,12 @@ const Chat = () => {
       .test(
         'length',
         t('channels.validation.length'),
-        (value) => value && value.length >= 3 && value.length <= 20,
+        value => value && value.length >= 3 && value.length <= 20,
       )
       .test(
         'unique',
         t('channels.validation.duplicate'),
-        (value) => !channels.some((c) => c.name === value),
+        value => !channels.some(c => c.name === value),
       )
       .required(t('channels.validation.required')),
   })
@@ -198,9 +198,9 @@ const Chat = () => {
     }
   }
 
-  const currentChannel = channels.find((c) => c.id === currentChannelId)
+  const currentChannel = channels.find(c => c.id === currentChannelId)
   const currentMessages = currentChannelId
-    ? messages.filter((m) => m.channelId === currentChannelId)
+    ? messages.filter(m => m.channelId === currentChannelId)
     : []
 
   return (
@@ -232,7 +232,7 @@ const Chat = () => {
               variant="pills"
               className="flex-column px-2 mb-3 overflow-auto h-100"
             >
-              {channels.map((channel) => (
+              {channels.map(channel => (
                 <Nav.Item key={channel.id} className="w-100">
                   <ButtonGroup className="d-flex w-100">
                     <Button
@@ -307,7 +307,7 @@ const Chat = () => {
                 id="messages-box"
                 className="chat-messages flex-grow-1 overflow-auto px-5"
               >
-                {currentMessages.map((m) => (
+                {currentMessages.map(m => (
                   <div key={m.id} className="text-break mb-2">
                     <b>{m.username}</b>: {m.body}
                   </div>
@@ -327,7 +327,7 @@ const Chat = () => {
                     <input
                       ref={inputRef}
                       value={text}
-                      onChange={(e) => setText(e.target.value)}
+                      onChange={e => setText(e.target.value)}
                       aria-label={t('messages.newMessage')}
                       placeholder={t('messages.placeholder')}
                       className="border-0 p-0 ps-2 form-control"

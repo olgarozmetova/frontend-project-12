@@ -38,9 +38,9 @@ const authSlice = createSlice({
       state.username = action.payload.username
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder
-      .addCase(login.pending, (state) => {
+      .addCase(login.pending, state => {
         state.status = 'loading'
         state.error = null
       })

@@ -28,10 +28,6 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-
-      '@stylistic/arrow-parens': ['error', 'as-needed'],
-      '@stylistic/semi': ['error', 'never'],
-      '@stylistic/quotes': ['error', 'single'],
     },
   },
 ])

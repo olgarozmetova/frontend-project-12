@@ -37,19 +37,13 @@ export default defineConfig([
       ...js.configs.recommended.rules,
 
       'react/react-in-jsx-scope': 'off',
+
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
+
       'react-refresh/only-export-components': 'warn',
 
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-
-      'arrow-parens': ['error', 'as-needed'],
-      semi: ['error', 'never'],
-      quotes: ['error', 'single'],
-      'brace-style': ['error', '1tbs'],
-      indent: ['error', 2],
-      'operator-linebreak': ['error', 'before'],
-      'multiline-ternary': ['error', 'always-multiline'],
     },
   },
 ])

@@ -25,7 +25,7 @@ const Login = () => {
 
   const schema = configureLoginSchema(t)
 
-  const { token, status, error } = useSelector((state) => state.auth)
+  const { token, status, error } = useSelector(state => state.auth)
 
   useEffect(() => {
     if (token) {
@@ -54,7 +54,7 @@ const Login = () => {
                   <Formik
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
-                    onSubmit={async (values) => {
+                    onSubmit={async values => {
                       try {
                         await dispatch(login(values)).unwrap()
                         navigate('/') // transition only after successful login

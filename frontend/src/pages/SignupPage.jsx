@@ -158,12 +158,12 @@ const Signup = () => {
                           <Form.Label>
                             {t('signupPage.passwordConfirmation')}
                           </Form.Label>
-                          {errors.confirmPassword &&
-                            touched.confirmPassword && (
-                              <div className="invalid-feedback">
-                                {errors.confirmPassword}
-                              </div>
-                            )}
+                          {errors.confirmPassword
+                            && touched.confirmPassword && (
+                            <div className="invalid-feedback">
+                              {errors.confirmPassword}
+                            </div>
+                          )}
                         </Form.Group>
 
                         {/* Submit */}

@@ -13,8 +13,8 @@ const channelsSlice = createSlice({
 
       const generalChannel = action.payload.find(c => c.name === 'general')
 
-      state.defaultChannelId =
-        generalChannel?.id ?? action.payload[0]?.id ?? null
+      state.defaultChannelId
+        = generalChannel?.id ?? action.payload[0]?.id ?? null
       state.currentChannelId = state.defaultChannelId
     },
     setCurrentChannel(state, action) {

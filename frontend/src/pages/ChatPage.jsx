@@ -385,25 +385,27 @@ const Chat = () => {
               <Modal.Body>
                 {error && <div className="alert alert-danger">{t(error)}</div>}
 
-                {modalType !== 'remove' ? (
-                  <>
-                    <label className="form-label" htmlFor="channel-name">
-                      {t('channels.name')}
-                    </label>
+                {modalType !== 'remove'
+                  ? (
+                    <>
+                      <label className="form-label" htmlFor="channel-name">
+                        {t('channels.name')}
+                      </label>
 
-                    <Field
-                      id="channel-name"
-                      name="name"
-                      className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                      autoFocus
-                    />
-                    {errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
-                    )}
-                  </>
-                ) : (
-                  <p>{t('modals.removeConfirm')}</p>
-                )}
+                      <Field
+                        id="channel-name"
+                        name="name"
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                        autoFocus
+                      />
+                      {errors.name && (
+                        <div className="invalid-feedback">{errors.name}</div>
+                      )}
+                    </>
+                  )
+                  : (
+                    <p>{t('modals.removeConfirm')}</p>
+                  )}
               </Modal.Body>
               <Modal.Footer>
                 <Button

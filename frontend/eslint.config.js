@@ -1,10 +1,9 @@
 import js from '@eslint/js'
 import globals from 'globals'
-
 import react from 'eslint-plugin-react'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
-
+import prettier from 'eslint-config-prettier'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
@@ -38,14 +37,16 @@ export default defineConfig([
     rules: {
       ...js.configs.recommended.rules,
 
+      'react/react-in-jsx-scope': 'off',
+
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
 
       'react-refresh/only-export-components': 'warn',
 
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-
-      'react/react-in-jsx-scope': 'off',
     },
   },
+
+  prettier,
 ])

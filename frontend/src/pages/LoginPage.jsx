@@ -109,9 +109,9 @@ const Login = () => {
                         className="w-100 mt-2 mb-3"
                         variant="outline-primary"
                       >
-                        {status === 'loading'
-                          ? t('loginPage.loginProcess')
-                          : t('loginPage.login')}
+                        {status === 'loading' ?
+                          t('loginPage.loginProcess') :
+                          t('loginPage.login')}
                       </Button>
                     </FormikForm>
                   </Formik>

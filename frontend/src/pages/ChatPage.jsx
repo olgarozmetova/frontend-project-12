@@ -199,9 +199,9 @@ const Chat = () => {
   }
 
   const currentChannel = channels.find(c => c.id === currentChannelId)
-  const currentMessages = currentChannelId
-    ? messages.filter(m => m.channelId === currentChannelId)
-    : []
+  const currentMessages = currentChannelId ?
+    messages.filter(m => m.channelId === currentChannelId) :
+    []
 
   return (
     <>
@@ -251,9 +251,9 @@ const Chat = () => {
                         <Dropdown.Toggle
                           split
                           variant={
-                            channel.id === currentChannelId
-                              ? 'secondary'
-                              : 'light'
+                            channel.id === currentChannelId ?
+                              'secondary' :
+                              'light'
                           }
                         >
                           <span className="visually-hidden">
@@ -418,11 +418,11 @@ const Chat = () => {
                   variant={modalType === 'remove' ? 'danger' : 'primary'}
                   disabled={isSubmitting}
                 >
-                  {isSubmitting
-                    ? t('modals.loading')
-                    : modalType === 'remove'
-                      ? t('channels.remove')
-                      : t('modals.send')}
+                  {isSubmitting ?
+                    t('modals.loading') :
+                    modalType === 'remove' ?
+                      t('channels.remove') :
+                      t('modals.send')}
                 </Button>
               </Modal.Footer>
             </FormikForm>

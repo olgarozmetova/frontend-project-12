@@ -102,9 +102,9 @@ const Signup = () => {
                             type="text"
                             placeholder={t('signupPage.username')}
                             className={
-                              errors.username && touched.username
-                                ? 'is-invalid'
-                                : ''
+                              errors.username && touched.username ?
+                                'is-invalid' :
+                                ''
                             }
                           />
                           <Form.Label>{t('signupPage.username')}</Form.Label>
@@ -126,9 +126,9 @@ const Signup = () => {
                             type="password"
                             placeholder={t('signupPage.password')}
                             className={
-                              errors.password && touched.password
-                                ? 'is-invalid'
-                                : ''
+                              errors.password && touched.password ?
+                                'is-invalid' :
+                                ''
                             }
                           />
                           <Form.Label>{t('signupPage.password')}</Form.Label>
@@ -150,9 +150,9 @@ const Signup = () => {
                             type="password"
                             placeholder={t('signupPage.passwordConfirmation')}
                             className={
-                              errors.confirmPassword && touched.confirmPassword
-                                ? 'is-invalid'
-                                : ''
+                              errors.confirmPassword && touched.confirmPassword ?
+                                'is-invalid' :
+                                ''
                             }
                           />
                           <Form.Label>
@@ -160,10 +160,10 @@ const Signup = () => {
                           </Form.Label>
                           {errors.confirmPassword &&
                             touched.confirmPassword && (
-                              <div className="invalid-feedback">
-                                {errors.confirmPassword}
-                              </div>
-                            )}
+                            <div className="invalid-feedback">
+                              {errors.confirmPassword}
+                            </div>
+                          )}
                         </Form.Group>
 
                         {/* Submit */}
@@ -173,9 +173,9 @@ const Signup = () => {
                           className="w-100 mt-2 mb-3"
                           variant="outline-primary"
                         >
-                          {isSubmitting
-                            ? t('signupPage.signupProcess')
-                            : t('signupPage.signup')}
+                          {isSubmitting ?
+                            t('signupPage.signupProcess') :
+                            t('signupPage.signup')}
                         </Button>
                       </FormikForm>
                     )}

@@ -58,12 +58,48 @@ const Chat = () => {
   const [modalChannel, setModalChannel] = useState(null)
   const [modalOpen, setModalOpen] = useState(false)
 
-  // INIT: Receive data (channels + messages)
+  // App INIT: Receive data (channels + messages) and subscribe to socket events
   useEffect(() => {
     const init = async () => {
       try {
         await dispatch(initApp()).unwrap()
+
+        if (!socket.connected) {
+          socket.connect()
+        }
+
+        socket.on('newMessage', (message) => {
+          const cleanMessage = {
+            ...message,
+            body: profanityFilter(message.body),
+          }
+
+          dispatch(addMessage(cleanMessage))
+        })
+
+        socket.on('newChannel', (channel) => {
+          dispatch(addChannel(channel))
+          toast.success(t('toast.channelCreated'))
+        })
+
+        socket.on('renameChannel', (channel) => {
+          dispatch(renameChannel({
+            id: channel.id,
+            name: channel.name,
+          }))
+
+          toast.success(t('toast.channelRenamed'))
+        })
+
+        // When another user deletes a channel, the messages are also deleted
+        socket.on('removeChannel', ({ id }) => {
+          dispatch(removeChannel(id))
+          dispatch(removeMessagesByChannel(id))
+
+          toast.success(t('toast.channelRemoved'))
+        })
       }
+
       catch (err) {
         console.error(err)
         toast.error(t('toast.loadingError'))
@@ -71,38 +107,6 @@ const Chat = () => {
     }
 
     init()
-  }, [dispatch, t])
-
-  // Connect WebSocket to subscribe to all events
-  useEffect(() => {
-    if (!socket.connected) {
-      socket.connect()
-    }
-
-    socket.on('newMessage', (message) => {
-      const cleanMessage = {
-        ...message,
-        body: profanityFilter(message.body),
-      }
-      dispatch(addMessage(cleanMessage))
-    })
-
-    socket.on('newChannel', (channel) => {
-      dispatch(addChannel(channel))
-      toast.success(t('toast.channelCreated'))
-    })
-
-    socket.on('renameChannel', (channel) => {
-      dispatch(renameChannel({ id: channel.id, name: channel.name }))
-      toast.success(t('toast.channelRenamed'))
-    })
-
-    // When another user deletes a channel, the messages are also deleted
-    socket.on('removeChannel', ({ id }) => {
-      dispatch(removeChannel(id))
-      dispatch(removeMessagesByChannel(id))
-      toast.success(t('toast.channelRemoved'))
-    })
 
     return () => {
       socket.off('newMessage')

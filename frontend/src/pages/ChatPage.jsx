@@ -20,7 +20,7 @@ import {
 } from '../store/channelsThunks'
 
 import { Formik, Form as FormikForm, Field } from 'formik'
-import * as yup from 'yup'
+import { configureChannelSchema } from '../validation/channelSchema'
 
 import {
   Container,
@@ -161,21 +161,7 @@ const Chat = () => {
   }
 
   // Channel name validation
-  const channelSchema = yup.object().shape({
-    name: yup
-      .string()
-      .test(
-        'length',
-        t('channels.validation.length'),
-        value => value && value.length >= 3 && value.length <= 20,
-      )
-      .test(
-        'unique',
-        t('channels.validation.duplicate'),
-        value => !channels.some(c => c.name === value),
-      )
-      .required(t('channels.validation.required')),
-  })
+  const channelSchema = configureChannelSchema(t, channels)
 
   // Submitting the modal window form
   const handleModalSubmit = async (values, { setSubmitting }) => {

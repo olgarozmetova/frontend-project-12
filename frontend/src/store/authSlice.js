@@ -11,7 +11,8 @@ export const login = createAsyncThunk(
       localStorage.setItem('token', data.token)
       localStorage.setItem('username', username)
       return { token: data.token, username }
-    } catch {
+    }
+    catch {
       return rejectWithValue('loginPage.error')
     }
   },
@@ -38,9 +39,9 @@ const authSlice = createSlice({
       state.username = action.payload.username
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(login.pending, state => {
+      .addCase(login.pending, (state) => {
         state.status = 'loading'
         state.error = null
       })

@@ -129,7 +129,7 @@ const Chat = () => {
       await api.post('/messages', {
         body: cleanText,
         channelId: currentChannelId,
-        username, //pass the name of the current user
+        username, // pass the name of the current user
       })
       setText('')
       inputRef.current?.focus() // return focus to the input field
@@ -294,7 +294,7 @@ const Chat = () => {
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
-                  <b># {currentChannel?.name}</b>
+                  <b>#{currentChannel?.name}</b>
                 </p>
                 <span className="text-muted">
                   {t('messagesCount', { count: currentMessages.length })}
@@ -309,7 +309,7 @@ const Chat = () => {
               >
                 {currentMessages.map(m => (
                   <div key={m.id} className="text-break mb-2">
-                    <b>{m.username}</b>: {m.body}
+                    <b>{m.username}</b>:{m.body}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />
@@ -385,27 +385,25 @@ const Chat = () => {
               <Modal.Body>
                 {error && <div className="alert alert-danger">{t(error)}</div>}
 
-                {modalType !== 'remove'
-                  ? (
-                    <>
-                      <label className="form-label" htmlFor="channel-name">
-                        {t('channels.name')}
-                      </label>
+                {modalType !== 'remove' ? (
+                  <>
+                    <label className="form-label" htmlFor="channel-name">
+                      {t('channels.name')}
+                    </label>
 
-                      <Field
-                        id="channel-name"
-                        name="name"
-                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                        autoFocus
-                      />
-                      {errors.name && (
-                        <div className="invalid-feedback">{errors.name}</div>
-                      )}
-                    </>
-                  )
-                  : (
-                    <p>{t('modals.removeConfirm')}</p>
-                  )}
+                    <Field
+                      id="channel-name"
+                      name="name"
+                      className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                      autoFocus
+                    />
+                    {errors.name && (
+                      <div className="invalid-feedback">{errors.name}</div>
+                    )}
+                  </>
+                ) : (
+                  <p>{t('modals.removeConfirm')}</p>
+                )}
               </Modal.Body>
               <Modal.Footer>
                 <Button

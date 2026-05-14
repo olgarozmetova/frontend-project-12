@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../api/api'
 
 // POST /messages
-export const sendMessage = createAsyncThunk('messages/send', async message => {
+export const sendMessage = createAsyncThunk('messages/send', async (message) => {
   const { data } = await api.post('/messages', message)
   return data
 })
@@ -26,12 +26,12 @@ const messagesSlice = createSlice({
       )
     },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder
-      .addCase(sendMessage.pending, state => {
+      .addCase(sendMessage.pending, (state) => {
         state.status = 'loading'
       })
-      .addCase(sendMessage.fulfilled, state => {
+      .addCase(sendMessage.fulfilled, (state) => {
         state.status = 'idle'
       })
   },

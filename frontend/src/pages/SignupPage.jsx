@@ -72,15 +72,18 @@ const Signup = () => {
                         )
 
                         navigate('/')
-                      } catch (err) {
+                      }
+                      catch (err) {
                         if (err.response?.status === 409) {
                           setErrors({
                             username: t('signupPage.errors.userExists'),
                           })
-                        } else {
+                        }
+                        else {
                           console.error(err)
                         }
-                      } finally {
+                      }
+                      finally {
                         setSubmitting(false)
                       }
                     }}
@@ -158,12 +161,12 @@ const Signup = () => {
                           <Form.Label>
                             {t('signupPage.passwordConfirmation')}
                           </Form.Label>
-                          {errors.confirmPassword &&
-                            touched.confirmPassword && (
-                              <div className="invalid-feedback">
-                                {errors.confirmPassword}
-                              </div>
-                            )}
+                          {errors.confirmPassword
+                            && touched.confirmPassword && (
+                            <div className="invalid-feedback">
+                              {errors.confirmPassword}
+                            </div>
+                          )}
                         </Form.Group>
 
                         {/* Submit */}
@@ -187,7 +190,10 @@ const Signup = () => {
             {/* Footer */}
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>{t('signupPage.hasAccount')} </span>
+                <span>
+                  {t('signupPage.hasAccount')}
+                  {' '}
+                </span>
                 <Link to="/login">{t('signupPage.login')}</Link>
               </div>
             </Card.Footer>

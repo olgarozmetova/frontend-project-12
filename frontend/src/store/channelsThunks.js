@@ -7,7 +7,8 @@ export const createChannel = createAsyncThunk(
     try {
       const { data } = await api.post('/channels', { name })
       return data
-    } catch {
+    }
+    catch {
       return rejectWithValue('channels.errors.create')
     }
   },
@@ -19,7 +20,8 @@ export const deleteChannel = createAsyncThunk(
     try {
       await api.delete(`/channels/${id}`)
       return id
-    } catch {
+    }
+    catch {
       return rejectWithValue('channels.errors.remove')
     }
   },
@@ -31,7 +33,8 @@ export const updateChannel = createAsyncThunk(
     try {
       const { data } = await api.patch(`/channels/${id}`, { name })
       return data
-    } catch {
+    }
+    catch {
       return rejectWithValue('channels.errors.rename')
     }
   },

@@ -7,13 +7,13 @@ import stylistic from '@stylistic/eslint-plugin'
 import { fileURLToPath } from 'url'
 
 const gitIgnorePath = fileURLToPath(new URL('.gitignore', import.meta.url))
-const eslintIgnorePath = fileURLToPath(
+/* const eslintIgnorePath = fileURLToPath(
   new URL('.eslintignore', import.meta.url),
-)
+) */
 
 export default defineConfig([
   includeIgnoreFile(gitIgnorePath),
-  includeIgnoreFile(eslintIgnorePath),
+  // includeIgnoreFile(eslintIgnorePath),
   stylistic.configs.recommended,
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],

@@ -54,11 +54,12 @@ const Login = () => {
                   <Formik
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
-                    onSubmit={async values => {
+                    onSubmit={async (values) => {
                       try {
                         await dispatch(login(values)).unwrap()
                         navigate('/') // transition only after successful login
-                      } catch (err) {
+                      }
+                      catch (err) {
                         console.error(err)
                         // Send error to Rollbar
                         rollbar.error('Ошибка при логине', err)
@@ -122,7 +123,10 @@ const Login = () => {
             {/* Footer */}
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>{t('loginPage.noAccount')} </span>
+                <span>
+                  {t('loginPage.noAccount')}
+                  {' '}
+                </span>
                 <Link to="/signup">{t('loginPage.signup')}</Link>
               </div>
             </Card.Footer>

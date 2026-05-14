@@ -47,8 +47,6 @@ export default {
       name: 'Имя канала',
       manage: 'Управление каналом',
       validation: {
-        /*   minLength: 'Минимум 3 символа',
-        maxLength: 'Максимум 20 символов', */
         length: 'От 3 до 20 символов',
         required: 'Обязательное поле',
         duplicate: 'Имя уже используется',

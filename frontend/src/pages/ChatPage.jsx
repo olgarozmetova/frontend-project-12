@@ -160,8 +160,6 @@ const Chat = () => {
   const channelSchema = yup.object().shape({
     name: yup
       .string()
-      /*    .min(3, t('channels.validation.minLength'))
-      .max(20, t('channels.validation.maxLength')) */
       .test(
         'length',
         t('channels.validation.length'),
@@ -212,7 +210,7 @@ const Chat = () => {
 
   return (
     <>
-      <Container className="vh-100 my-4 overflow-hidden rounded shadow">
+      <Container className="h-75 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white flex-md-row">
           {/* Channels */}
           <Col
@@ -267,15 +265,6 @@ const Chat = () => {
                             {t('channels.manage')}
                           </span>
                         </Dropdown.Toggle>
-                        {/*        <Dropdown.Toggle
-                          split
-                          variant={
-                            channel.id === currentChannelId
-                              ? 'secondary'
-                              : 'light'
-                          }
-                          aria-label={t('channels.manage')}
-                        /> */}
                         <Dropdown.Menu>
                           <Dropdown.Item
                             onClick={() => openModal('rename', channel)}
@@ -308,7 +297,6 @@ const Chat = () => {
                 </p>
                 <span className="text-muted">
                   {t('messagesCount', { count: currentMessages.length })}
-                  {/*  {currentMessages.length} сообщений */}
                 </span>
               </div>
 

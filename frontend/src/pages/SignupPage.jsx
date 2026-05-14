@@ -23,6 +23,43 @@ const Signup = () => {
 
   const schema = configureSignupSchema(t)
 
+  const handleSubmit = async (
+    values,
+    { setSubmitting, setErrors },
+  ) => {
+    try {
+      const { data } = await api.post('/signup', {
+        username: values.username,
+        password: values.password,
+      })
+
+      localStorage.setItem('token', data.token)
+      localStorage.setItem('username', data.username)
+
+      dispatch(
+        setAuth({
+          token: data.token,
+          username: data.username,
+        }),
+      )
+
+      navigate('/')
+    }
+    catch (err) {
+      if (err.response?.status === 409) {
+        setErrors({
+          username: t('signupPage.errors.userExists'),
+        })
+      }
+      else {
+        console.error(err)
+      }
+    }
+    finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <Container fluid className="min-vh-100">
       <Row className="justify-content-center align-items-center min-vh-100">
@@ -53,40 +90,7 @@ const Signup = () => {
                       confirmPassword: '',
                     }}
                     validationSchema={schema}
-                    onSubmit={async (values, { setSubmitting, setErrors }) => {
-                      try {
-                        const { data } = await api.post('/signup', {
-                          username: values.username,
-                          password: values.password,
-                        })
-
-                        localStorage.setItem('token', data.token)
-                        localStorage.setItem('username', data.username)
-
-                        // update Redux
-                        dispatch(
-                          setAuth({
-                            token: data.token,
-                            username: data.username,
-                          }),
-                        )
-
-                        navigate('/')
-                      }
-                      catch (err) {
-                        if (err.response?.status === 409) {
-                          setErrors({
-                            username: t('signupPage.errors.userExists'),
-                          })
-                        }
-                        else {
-                          console.error(err)
-                        }
-                      }
-                      finally {
-                        setSubmitting(false)
-                      }
-                    }}
+                    onSubmit={handleSubmit}
                   >
                     {({ errors, touched, isSubmitting }) => (
                       <FormikForm>

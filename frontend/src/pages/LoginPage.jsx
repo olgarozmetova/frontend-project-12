@@ -27,6 +27,17 @@ const Login = () => {
 
   const { token, status, error } = useSelector(state => state.auth)
 
+  const handleSubmit = async (values) => {
+    try {
+      await dispatch(login(values)).unwrap()
+      navigate('/')
+    }
+    catch (err) {
+      console.error(err)
+      rollbar.error('Ошибка при логине', err)
+    }
+  }
+
   useEffect(() => {
     if (token) {
       navigate('/')
@@ -54,17 +65,7 @@ const Login = () => {
                   <Formik
                     initialValues={{ username: '', password: '' }}
                     validationSchema={schema}
-                    onSubmit={async (values) => {
-                      try {
-                        await dispatch(login(values)).unwrap()
-                        navigate('/') // transition only after successful login
-                      }
-                      catch (err) {
-                        console.error(err)
-                        // Send error to Rollbar
-                        rollbar.error('Ошибка при логине', err)
-                      }
-                    }}
+                    onSubmit={handleSubmit}
                   >
                     <FormikForm>
                       <h1 className="text-center mb-4">

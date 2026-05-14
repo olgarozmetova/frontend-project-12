@@ -17,6 +17,11 @@ export default defineConfig([
   stylistic.configs.recommended,
   {
     files: ['**/*.{js,mjs,cjs,jsx}'],
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
     plugins: { js },
     extends: ['js/recommended'],
   },

@@ -63,7 +63,8 @@ const Chat = () => {
     const init = async () => {
       try {
         await dispatch(initApp()).unwrap()
-      } catch (err) {
+      }
+      catch (err) {
         console.error(err)
         toast.error(t('toast.loadingError'))
       }
@@ -78,7 +79,7 @@ const Chat = () => {
       socket.connect()
     }
 
-    socket.on('newMessage', message => {
+    socket.on('newMessage', (message) => {
       const cleanMessage = {
         ...message,
         body: profanityFilter(message.body),
@@ -86,12 +87,12 @@ const Chat = () => {
       dispatch(addMessage(cleanMessage))
     })
 
-    socket.on('newChannel', channel => {
+    socket.on('newChannel', (channel) => {
       dispatch(addChannel(channel))
       toast.success(t('toast.channelCreated'))
     })
 
-    socket.on('renameChannel', channel => {
+    socket.on('renameChannel', (channel) => {
       dispatch(renameChannel({ id: channel.id, name: channel.name }))
       toast.success(t('toast.channelRenamed'))
     })
@@ -117,7 +118,7 @@ const Chat = () => {
   }, [messages, currentChannelId])
 
   // Send message
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     if (!currentChannelId || !text.trim()) return
 
@@ -133,9 +134,11 @@ const Chat = () => {
       })
       setText('')
       inputRef.current?.focus() // return focus to the input field
-    } catch {
+    }
+    catch {
       toast.error(t('toast.networkError'))
-    } finally {
+    }
+    finally {
       setSending(false)
     }
   }
@@ -181,19 +184,23 @@ const Chat = () => {
         const channel = await dispatch(createChannel(cleanName)).unwrap()
         // Switch to a new channel
         dispatch(setCurrentChannel(channel.id))
-      } else if (modalType === 'rename') {
+      }
+      else if (modalType === 'rename') {
         await dispatch(
           updateChannel({ id: modalChannel.id, name: cleanName }),
         ).unwrap()
-      } else if (modalType === 'remove') {
+      }
+      else if (modalType === 'remove') {
         await dispatch(deleteChannel(modalChannel.id)).unwrap()
         // Switch to the default channel
         dispatch(setCurrentChannel(defaultChannelId))
       }
       closeModal()
-    } catch (err) {
+    }
+    catch (err) {
       console.error('Ошибка операции с каналом:', err)
-    } finally {
+    }
+    finally {
       setSubmitting(false)
     }
   }
@@ -294,7 +301,10 @@ const Chat = () => {
             <div className="d-flex flex-column h-100">
               <div className="bg-light mb-4 p-3 shadow-sm small">
                 <p className="m-0">
-                  <b>#{currentChannel?.name}</b>
+                  <b>
+                    #
+                    {currentChannel?.name}
+                  </b>
                 </p>
                 <span className="text-muted">
                   {t('messagesCount', { count: currentMessages.length })}
@@ -309,7 +319,9 @@ const Chat = () => {
               >
                 {currentMessages.map(m => (
                   <div key={m.id} className="text-break mb-2">
-                    <b>{m.username}</b>:{m.body}
+                    <b>{m.username}</b>
+                    :
+                    {m.body}
                   </div>
                 ))}
                 <div ref={messagesEndRef} />
@@ -385,25 +397,27 @@ const Chat = () => {
               <Modal.Body>
                 {error && <div className="alert alert-danger">{t(error)}</div>}
 
-                {modalType !== 'remove' ? (
-                  <>
-                    <label className="form-label" htmlFor="channel-name">
-                      {t('channels.name')}
-                    </label>
+                {modalType !== 'remove'
+                  ? (
+                      <>
+                        <label className="form-label" htmlFor="channel-name">
+                          {t('channels.name')}
+                        </label>
 
-                    <Field
-                      id="channel-name"
-                      name="name"
-                      className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                      autoFocus
-                    />
-                    {errors.name && (
-                      <div className="invalid-feedback">{errors.name}</div>
+                        <Field
+                          id="channel-name"
+                          name="name"
+                          className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                          autoFocus
+                        />
+                        {errors.name && (
+                          <div className="invalid-feedback">{errors.name}</div>
+                        )}
+                      </>
+                    )
+                  : (
+                      <p>{t('modals.removeConfirm')}</p>
                     )}
-                  </>
-                ) : (
-                  <p>{t('modals.removeConfirm')}</p>
-                )}
               </Modal.Body>
               <Modal.Footer>
                 <Button

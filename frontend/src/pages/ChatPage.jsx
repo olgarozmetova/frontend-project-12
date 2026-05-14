@@ -13,14 +13,10 @@ import {
   renameChannel,
   removeChannel,
 } from '../store/channelsSlice'
-import {
-  createChannel,
-  deleteChannel,
-  updateChannel,
-} from '../store/channelsThunks'
 
-import { Formik, Form as FormikForm, Field } from 'formik'
-import { configureChannelSchema } from '../validation/channelSchema'
+import AddChannelModal from '../components/modals/AddChannelModal'
+import RenameChannelModal from '../components/modals/RenameChannelModal'
+import RemoveChannelModal from '../components/modals/RemoveChannelModal'
 
 import {
   Container,
@@ -30,7 +26,6 @@ import {
   Nav,
   Dropdown,
   ButtonGroup,
-  Modal,
 } from '../components/bootstrap'
 
 const Chat = () => {
@@ -40,13 +35,9 @@ const Chat = () => {
   const {
     list: channels,
     currentChannelId,
-    defaultChannelId,
   } = useSelector(state => state.channels)
   const messages = useSelector(state => state.messages.list)
   const username = useSelector(state => state.auth.username)
-  const error = useSelector(state => state.channels.error)
-
-  // console.log('channels:', channels)
 
   const [text, setText] = useState('')
   const [sending, setSending] = useState(false)
@@ -56,7 +47,6 @@ const Chat = () => {
   // Modal states
   const [modalType, setModalType] = useState(null) // 'add', 'rename', 'remove'
   const [modalChannel, setModalChannel] = useState(null)
-  const [modalOpen, setModalOpen] = useState(false)
 
   // App INIT: Receive data (channels + messages) and subscribe to socket events
   useEffect(() => {
@@ -151,46 +141,11 @@ const Chat = () => {
   const openModal = (type, channel = null) => {
     setModalType(type)
     setModalChannel(channel)
-    setModalOpen(true)
   }
 
   const closeModal = () => {
-    setModalOpen(false)
     setModalType(null)
     setModalChannel(null)
-  }
-
-  // Channel name validation
-  const channelSchema = configureChannelSchema(t, channels)
-
-  // Submitting the modal window form
-  const handleModalSubmit = async (values, { setSubmitting }) => {
-    const cleanName = profanityFilter(values.name)
-
-    try {
-      if (modalType === 'add') {
-        const channel = await dispatch(createChannel(cleanName)).unwrap()
-        // Switch to a new channel
-        dispatch(setCurrentChannel(channel.id))
-      }
-      else if (modalType === 'rename') {
-        await dispatch(
-          updateChannel({ id: modalChannel.id, name: cleanName }),
-        ).unwrap()
-      }
-      else if (modalType === 'remove') {
-        await dispatch(deleteChannel(modalChannel.id)).unwrap()
-        // Switch to the default channel
-        dispatch(setCurrentChannel(defaultChannelId))
-      }
-      closeModal()
-    }
-    catch (err) {
-      console.error('Ошибка операции с каналом:', err)
-    }
-    finally {
-      setSubmitting(false)
-    }
   }
 
   const currentChannel = channels.find(c => c.id === currentChannelId)
@@ -298,7 +253,7 @@ const Chat = () => {
                 {currentMessages.map(m => (
                   <div key={m.id} className="text-break mb-2">
                     <b>{m.username}</b>
-                    :
+                    {': '}
                     {m.body}
                   </div>
                 ))}
@@ -353,74 +308,23 @@ const Chat = () => {
         </Row>
       </Container>
 
-      {/* Modal */}
-      <Modal show={modalOpen} onHide={closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>
-            {modalType === 'add' && t('modals.add')}
-            {modalType === 'rename' && t('modals.rename')}
-            {modalType === 'remove' && t('modals.remove')}
-          </Modal.Title>
-        </Modal.Header>
-        <Formik
-          key={modalType}
-          initialValues={{ name: modalChannel?.name ?? '' }}
-          validationSchema={modalType !== 'remove' ? channelSchema : null}
-          onSubmit={handleModalSubmit}
-          validateOnBlur={false}
-          validateOnChange={false}
-        >
-          {({ errors, isSubmitting }) => (
-            <FormikForm>
-              <Modal.Body>
-                {error && <div className="alert alert-danger">{t(error)}</div>}
+      <AddChannelModal
+        show={modalType === 'add'}
+        onHide={closeModal}
+      />
 
-                {modalType !== 'remove'
-                  ? (
-                      <>
-                        <label className="form-label" htmlFor="channel-name">
-                          {t('channels.name')}
-                        </label>
+      <RenameChannelModal
+        show={modalType === 'rename'}
+        onHide={closeModal}
+        channel={modalChannel}
+      />
 
-                        <Field
-                          id="channel-name"
-                          name="name"
-                          className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                          autoFocus
-                        />
-                        {errors.name && (
-                          <div className="invalid-feedback">{errors.name}</div>
-                        )}
-                      </>
-                    )
-                  : (
-                      <p>{t('modals.removeConfirm')}</p>
-                    )}
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="secondary"
-                  onClick={closeModal}
-                  disabled={isSubmitting}
-                >
-                  {t('modals.cancel')}
-                </Button>
-                <Button
-                  type="submit"
-                  variant={modalType === 'remove' ? 'danger' : 'primary'}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting
-                    ? t('modals.loading')
-                    : modalType === 'remove'
-                      ? t('channels.remove')
-                      : t('modals.send')}
-                </Button>
-              </Modal.Footer>
-            </FormikForm>
-          )}
-        </Formik>
-      </Modal>
+      <RemoveChannelModal
+        show={modalType === 'remove'}
+        onHide={closeModal}
+        channel={modalChannel}
+      />
+
     </>
   )
 }
